@@ -10,8 +10,7 @@ def nearestEqualOrSmallerIndex(n:int, indexSlicers, initialL, debug=False):
       print("index Slicers: {} \n\n l: {} \n\n n : {} \n\n ".format(indexSlicers,l,n))     
   
   for x,v in enumerate(l):
-    
-    
+  
     IfEqual = (v == n)
     IfLess = (v < n)
     IfBigger = (v > n)
@@ -38,19 +37,14 @@ def nearestEqualOrSmallerIndex(n:int, indexSlicers, initialL, debug=False):
     if IfBigger:
         n2 = index-1    
         break  
-  
   if debug:
       print("n final: {} ".format(n2))  
-   
-   
+ 
   return n2
-  
   #Give us the last appenden object 
        
-def EqualorSmallerIndexOnListToN(n:int, l:list, debug=False):
-    
+def EqualorSmallerIndexOnListToN(n:int, l:list, debug=False):  
     # l is a sorted list
-
     lenL = len(l)
     leftSlice = 0
     rightSlice = lenL
@@ -61,8 +55,7 @@ def EqualorSmallerIndexOnListToN(n:int, l:list, debug=False):
              
       ifNBiggerThanlenL = ( initialL[-1] <= n)    
       if ifNBiggerThanlenL:    
-        return lenL-1
-            
+        return lenL-1        
       ifLenNLessorEqualltoD = (lenL <= d)
        
       if  ifLenNLessorEqualltoD:    
@@ -106,22 +99,17 @@ def EqualorSmallerIndexOnListToN(n:int, l:list, debug=False):
       
       
     return FindNearNumberbyHalfingSignComparison(d, n, lenL, indexSlicers, initialL, debug )
-
-
-    
-n2=100022234
-n= 3599356
-
-#l=primes(n2) 
+   
+n2=1000222340
+n= 3599355
 
 l = list(range(0,n2,2))  
 
 prime_tic = time.perf_counter()  
-#print(EquallorSmallerIndexOnListToN(n,l,debug=True))
 i = EqualorSmallerIndexOnListToN(n,l,debug=False)
-
 prime_toc = time.perf_counter()  
 runTime = prime_toc - prime_tic
+
 print("runtime : {}".format(runTime))
 
 print(l[i])
