@@ -1,4 +1,5 @@
 import time
+from random import randrange
 
 import numpy as np
 
@@ -14,18 +15,17 @@ def nearestEqualOrSmallerIndex(n:int, indexSlicers, initialL, debug=False):
     IfEqual = (v == n)
     IfLess = (v < n)
     IfBigger = (v > n)
-    conditions = []
-    
-    conditions.append(IfEqual)
-    conditions.append(IfLess)
-    conditions.append(IfBigger)
-    
+
     index = indexSlicers[0] + x 
-    
-    v2 = initialL[index]  
-    
+        
     if debug:
-      print("condition : {} \n\n n: {} \n x: {} \n index: {} \n value loop: {} \n value on list: {} ".format(conditions,n,x,index,v,v2))   
+      conditions = []
+      v2 = initialL[index]  
+      conditions.append(IfEqual)
+      conditions.append(IfLess)
+      conditions.append(IfBigger)
+      
+      print("conditions : {} \n\n n: {} \n x: {} \n index: {} \n value loop: {} \n value on list: {} ".format(conditions,n,x,index,v,v2))   
    
     if IfEqual:
         n2 = index 
@@ -50,7 +50,8 @@ def EqualorSmallerIndexOnListToN(n:int, l:list, debug=False):
     rightSlice = lenL
     indexSlicers=[leftSlice,rightSlice]
     initialL = l
-    d = 100
+    d = 50
+    
     def FindNearNumberbyHalfingSignComparison(d:int,n:int,lenL:int,indexSlicers:list, initialL:list,debug=False) -> list:
              
       ifNBiggerThanlenL = ( initialL[-1] <= n)    
@@ -61,9 +62,12 @@ def EqualorSmallerIndexOnListToN(n:int, l:list, debug=False):
       if  ifLenNLessorEqualltoD:    
         #we short the loop when we reach d element        
         return nearestEqualOrSmallerIndex(n,indexSlicers,initialL,debug)          
-            
-      half = int(lenL/2)
-      index = indexSlicers[0] + half
+      
+      #We pick a random position on this range  
+                       
+      random = int(randrange(lenL-1))
+      
+      index = indexSlicers[0] + random
       value = initialL[index] 
       conditions=[]
        
@@ -83,6 +87,7 @@ def EqualorSmallerIndexOnListToN(n:int, l:list, debug=False):
          return  index
         
       if IfBigger:
+        
          indexSlicers[0] = index          
          l = initialL[indexSlicers[0]:indexSlicers[1]]
          lenL = len(l)
@@ -100,16 +105,16 @@ def EqualorSmallerIndexOnListToN(n:int, l:list, debug=False):
       
     return FindNearNumberbyHalfingSignComparison(d, n, lenL, indexSlicers, initialL, debug )
    
-n2=1000222340
-n= 3599355
+n2 = 100022235 #list end number
+n = 359443 #number on the list
 
-l = list(range(0,n2,2))  
-
+l = list(range(0,n2,3))  
+debug=True
 prime_tic = time.perf_counter()  
-i = EqualorSmallerIndexOnListToN(n,l,debug=False)
+i = EqualorSmallerIndexOnListToN(n,l,debug)
 prime_toc = time.perf_counter()  
 runTime = prime_toc - prime_tic
 
-print("runtime : {}".format(runTime))
+print("runtime : {} seconds".format(runTime))
 
 print(l[i])
