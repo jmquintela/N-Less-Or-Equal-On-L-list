@@ -105,8 +105,8 @@ def EqualorSmallerIndexOnListToN(n:int, l:list, debug=False):
       
     return FindNearNumberbyHalfingSignComparison(d, n, lenL, indexSlicers, initialL, debug )
    
-n2 = 100022235 #list end number
-n = 359443 #number on the list
+n2 = 100022235
+n = 359443
 
 l = list(range(0,n2,3))  
 debug=True
@@ -117,4 +117,4 @@ runTime = prime_toc - prime_tic
 
 print("runtime : {} seconds".format(runTime))
 
-print(l[i])
+print("the value on index  {} is: {}".format(i,l[i]))
