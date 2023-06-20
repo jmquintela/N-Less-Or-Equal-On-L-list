@@ -48,9 +48,7 @@ def nearestEqualOrSmallerIndex(n:int, indexSlicers, initialL, debug=False):
   #Give us the last appenden object 
        
 def equalOrSmallerIndexOnListToN(n:int, l:list, debug=False):  
-  
-    # l is a sorted list
-    
+    # l is a sorted list     
     lenL = len(l)
     leftSlice = 0
     rightSlice = lenL
@@ -72,7 +70,7 @@ def equalOrSmallerIndexOnListToN(n:int, l:list, debug=False):
       #We pick a random position on this range  
       
       div = 15
-      part = int(lenL / div)   
+      part = lenL // div   
       N = list(range(0,div,1))
       maxL = len(initialL)
       for i in N:
@@ -111,21 +109,45 @@ def equalOrSmallerIndexOnListToN(n:int, l:list, debug=False):
         
       lenL = indexSlicers[1] - indexSlicers[0]
       #print("lenL {} \n".format(lenL))
-      return findIndex(d, n, lenL, indexSlicers, initialL, debug )    
-    
-    
+      return findIndex(d, n, lenL, indexSlicers, initialL, debug )      
     return findIndex(d, n, lenL, indexSlicers, initialL, debug )
    
-n2 = 100022235
-n = 359443
+def primes(n):
+   # https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+       
+   limit = n
+   end = limit + 1
+   composite = np.zeros(((end + 7) // 8,), dtype = np.uint8)
+   
+   for i in range(3, int(end ** 0.5 + 2.01)):       
+       if not (composite[i // 8] & (1 << (i % 8))):      
+           for j in range(i * i, end, i):                        
+             composite[j // 8] |= 1 << (j % 8)
+               
+   return np.array([2] + [i for i in range(3, end, 2)
+       if not (composite[i // 8] & (1 << (i % 8)))], dtype = np.uint32)
+ 
+ 
+def TestClosestLessOrEqualNonL(n=100,l=[]): 
+ 
+ results = []
+ times = []
+ for x in range(n):
+  prime_tic = time.perf_counter()  
+  i = equalOrSmallerIndexOnListToN(x,l)
+  prime_toc = time.perf_counter()  
+  runTime = prime_toc - prime_tic
+  times.append(runTime)
+  result = ["runtime of : {} seconds".format(runTime),"for x: {} the value on index  {} is: {}".format(x,i,l[i])]
+  results.append(result)
+  
+ return results,times
+       
+n2 = 444422
+n = 12035
+l = primes(n2)  
+test,t = TestClosestLessOrEqualNonL(n,l)
 
-l = list(range(0,n2,3))  
-debug=True
-prime_tic = time.perf_counter()  
-i = EqualorSmallerIndexOnListToN(n,l,debug)
-prime_toc = time.perf_counter()  
-runTime = prime_toc - prime_tic
-
-print("runtime : {} seconds".format(runTime))
-
-print("the value on index  {} is: {}".format(i,l[i]))
+for i,x in enumerate(test):
+ print(test[i][0] + "\n" + test[i][1] + "\n" )
+print(sum(t))
