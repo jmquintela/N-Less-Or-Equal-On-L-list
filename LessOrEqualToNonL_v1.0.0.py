@@ -5,10 +5,13 @@ import numpy as np
 
 
 def nearestEqualOrSmallerIndex(n:int, indexSlicers, initialL, debug=False):
+  
   n2 = 0
   l = initialL[indexSlicers[0]:indexSlicers[1]]
+  
   if debug:
-      print("index Slicers: {} \n\n l: {} \n\n n : {} \n\n ".format(indexSlicers,l,n))     
+      
+      print("index Slicers: {} \n n : {} \n ".format(indexSlicers,n))     
   
   for x,v in enumerate(l):
   
@@ -19,6 +22,7 @@ def nearestEqualOrSmallerIndex(n:int, indexSlicers, initialL, debug=False):
     index = indexSlicers[0] + x 
         
     if debug:
+      
       conditions = []
       v2 = initialL[index]  
       conditions.append(IfEqual)
@@ -43,67 +47,74 @@ def nearestEqualOrSmallerIndex(n:int, indexSlicers, initialL, debug=False):
   return n2
   #Give us the last appenden object 
        
-def EqualorSmallerIndexOnListToN(n:int, l:list, debug=False):  
+def equalOrSmallerIndexOnListToN(n:int, l:list, debug=False):  
+  
     # l is a sorted list
+    
     lenL = len(l)
     leftSlice = 0
     rightSlice = lenL
     indexSlicers=[leftSlice,rightSlice]
     initialL = l
-    d = 50
+    d = 100
     
-    def FindNearNumberbyHalfingSignComparison(d:int,n:int,lenL:int,indexSlicers:list, initialL:list,debug=False) -> list:
+    def findIndex(d:int,n:int,lenL:int,indexSlicers:list, initialL:list,debug=False) -> list:
              
       ifNBiggerThanlenL = ( initialL[-1] <= n)    
       if ifNBiggerThanlenL:    
-        return lenL-1        
+        return lenL-1         
       ifLenNLessorEqualltoD = (lenL <= d)
-       
+     
       if  ifLenNLessorEqualltoD:    
         #we short the loop when we reach d element        
         return nearestEqualOrSmallerIndex(n,indexSlicers,initialL,debug)          
       
       #We pick a random position on this range  
-                       
-      random = int(randrange(lenL-1))
       
-      index = indexSlicers[0] + random
-      value = initialL[index] 
-      conditions=[]
+      div = 15
+      part = int(lenL / div)   
+      N = list(range(0,div,1))
+      maxL = len(initialL)
+      for i in N:
+        
+        random1 = int(randrange(1,part,1)) 
+        #print(i)
+        
+        i = (i-1)*part
        
-      IfBigger = (n > value)
-      IfEqual = (n == value)
-      IfLess = (n < value)
-      
-      conditions.append(IfBigger)
-      conditions.append(IfEqual)
-      conditions.append(IfLess)
-      
-      if debug:
-       print( "lenL : {}, n: {} \n Conditions: {} \n Value :  {}\n Index :  {}  \n Slicing index : {} \n".format(lenL,n,conditions,value,index,indexSlicers) )
-  
-      if IfEqual:
+        #print("i : {}".format(i))
+        #print("random : {}".format(random))
+        
+        random = indexSlicers[0]+ i+random1
+        #with this we max the value of random so it soesnt outbound the list
+        if random >= maxL:
+          random = maxL -1
+        if debug: 
+         print("part:{} \n , i : {} \n , random1 : {} \n lenL = {}".format(part,i,random1,lenL))
+        # print(len(initialL))
+        #print(len(N))
+        v = initialL[random]
+        
+        #print("value: {}".format(v))
+        #print(v)
+        
+        if v == n :
+          return random
+        if v < n : 
+          if random > indexSlicers[0]: 
+           indexSlicers[0] = random  
+          #print("slicer down : {} \n".format(indexSlicers[0]))
+        if v > n :
+          if random < indexSlicers[1]: 
+           indexSlicers[1] = random
+          #print("slicer up : {} \n".format(indexSlicers[1]))    
+        
+      lenL = indexSlicers[1] - indexSlicers[0]
+      #print("lenL {} \n".format(lenL))
+      return findIndex(d, n, lenL, indexSlicers, initialL, debug )    
     
-         return  index
-        
-      if IfBigger:
-        
-         indexSlicers[0] = index          
-         l = initialL[indexSlicers[0]:indexSlicers[1]]
-         lenL = len(l)
-         
-         return FindNearNumberbyHalfingSignComparison(d,n, lenL,indexSlicers, initialL, debug )
-      
-      #and slice the parts from the array that are   
-
-      if IfLess:
-         indexSlicers[1] = index                   
-         l = initialL[indexSlicers[0]:indexSlicers[1]]
-         lenL = len(l)
-         return FindNearNumberbyHalfingSignComparison(d,n , lenL ,indexSlicers, initialL, debug)
-      
-      
-    return FindNearNumberbyHalfingSignComparison(d, n, lenL, indexSlicers, initialL, debug )
+    
+    return findIndex(d, n, lenL, indexSlicers, initialL, debug )
    
 n2 = 100022235
 n = 359443
