@@ -57,10 +57,24 @@ def equalOrSmallerIndexOnListToN(n:int, l:list, debug=False):
     d = 100
     
     def findIndex(d:int,n:int,lenL:int,indexSlicers:list, initialL:list,debug=False) -> list:
-             
-      ifNBiggerThanlenL = ( initialL[-1] <= n)    
-      if ifNBiggerThanlenL:    
-        return lenL-1         
+      
+      NEquallenL = ( initialL[0] == n)    
+         
+      NLessThanlenL = ( initialL[0] > n)
+      
+      NBiggerThanlenL = ( initialL[-1] <= n)    
+      
+      if NEquallenL:
+        print("equal")
+        return 0
+      
+      if NLessThanlenL:
+        print("n is smaller than L")  
+        return  None
+      
+      if NBiggerThanlenL:    
+        return lenL-1      
+              
       ifLenNLessorEqualltoD = (lenL <= d)
      
       if  ifLenNLessorEqualltoD:    
@@ -133,21 +147,29 @@ def TestClosestLessOrEqualNonL(n=100,l=[]):
  results = []
  times = []
  for x in range(n):
+  print(x)
   prime_tic = time.perf_counter()  
   i = equalOrSmallerIndexOnListToN(x,l)
   prime_toc = time.perf_counter()  
   runTime = prime_toc - prime_tic
+  v = l[i]
+  if x > l[0] and v > x:
+    print("algorithm is wrong")
   times.append(runTime)
-  result = ["runtime of : {} seconds".format(runTime),"for x: {} the value on index  {} is: {}".format(x,i,l[i])]
+  result = ["runtime of : {} seconds".format(runTime),"for x: {} the value on index  {} is: {}".format(x,i,v)]
   results.append(result)
   
  return results,times
        
 n2 = 444422
-n = 12035
+n = 60
 l = primes(n2)  
 test,t = TestClosestLessOrEqualNonL(n,l)
 
 for i,x in enumerate(test):
  print(test[i][0] + "\n" + test[i][1] + "\n" )
-print(sum(t))
+print("total time run: {} secs".format(sum(t)))
+
+
+#i = equalOrSmallerIndexOnListToN(n,l,debug=True)
+#print(i)
