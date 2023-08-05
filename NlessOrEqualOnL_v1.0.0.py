@@ -14,7 +14,9 @@ def nearestEqualOrSmallerIndex(n:int, indexSlicers, initialL, debug=False):
       print("index Slicers: {} \n n : {} \n ".format(indexSlicers,n))     
   
   for x,v in enumerate(l):
-  
+    #this take our list indexes and by testing conditional we can slice the ranges on wich our closest number is
+    #this testing is done by picking a random index (position on the list) and comparing the list number with n
+    
     IfEqual = (v == n)
     IfLess = (v < n)
     IfBigger = (v > n)
@@ -45,7 +47,7 @@ def nearestEqualOrSmallerIndex(n:int, indexSlicers, initialL, debug=False):
       print("n final: {} ".format(n2))  
  
   return n2
-  #Give us the last appenden object 
+  #Give us the last append object 
        
 def equalOrSmallerIndexOnListToN(n:int, l:list, debug=False):  
     # l is a sorted list     
@@ -59,28 +61,21 @@ def equalOrSmallerIndexOnListToN(n:int, l:list, debug=False):
     def findIndex(d:int,n:int,lenL:int,indexSlicers:list, initialL:list,debug=False) -> list:
       
       NEquallenL = ( initialL[0] == n)    
-         
-      NLessThanlenL = ( initialL[0] > n)
-      
+      NLessThanlenL = ( initialL[0] > n) 
       NBiggerThanlenL = ( initialL[-1] <= n)    
       
       if NEquallenL:
         print("equal")
-        return 0
-      
+        return 0      
       if NLessThanlenL:
         print("n is smaller than L")  
-        return  None
-      
+        return  None    
       if NBiggerThanlenL:    
-        return lenL-1      
-              
+        return lenL-1                
       ifLenNLessorEqualltoD = (lenL <= d)
-     
       if  ifLenNLessorEqualltoD:    
         #we short the loop when we reach d element        
-        return nearestEqualOrSmallerIndex(n,indexSlicers,initialL,debug)          
-      
+        return nearestEqualOrSmallerIndex(n,indexSlicers,initialL,debug)              
       #We pick a random position on this range  
       
       div = 15
@@ -90,15 +85,14 @@ def equalOrSmallerIndexOnListToN(n:int, l:list, debug=False):
       for i in N:
         
         random1 = int(randrange(1,part,1)) 
-        #print(i)
-        
+        # print(i)
         i = (i-1)*part
        
-        #print("i : {}".format(i))
-        #print("random : {}".format(random))
+        # print("i : {}".format(i))
+        # print("random : {}".format(random))
         
-        random = indexSlicers[0]+ i+random1
-        #with this we max the value of random so it soesnt outbound the list
+        random = indexSlicers[0] + i+ random1
+        # with this we max the value of random so it so doesn't outbound the list
         if random >= maxL:
           random = maxL -1
         if debug: 
@@ -107,8 +101,8 @@ def equalOrSmallerIndexOnListToN(n:int, l:list, debug=False):
         #print(len(N))
         v = initialL[random]
         
-        #print("value: {}".format(v))
-        #print(v)
+        # print("value: {}".format(v))
+        # print(v)
         
         if v == n :
           return random
@@ -116,10 +110,12 @@ def equalOrSmallerIndexOnListToN(n:int, l:list, debug=False):
           if random > indexSlicers[0]: 
            indexSlicers[0] = random  
           #print("slicer down : {} \n".format(indexSlicers[0]))
+        
         if v > n :
           if random < indexSlicers[1]: 
            indexSlicers[1] = random
-          #print("slicer up : {} \n".format(indexSlicers[1]))    
+          
+      #print("slicer up : {} \n".format(indexSlicers[1]))    
         
       lenL = indexSlicers[1] - indexSlicers[0]
       #print("lenL {} \n".format(lenL))
